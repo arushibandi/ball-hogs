@@ -7,7 +7,7 @@ created by Lukas Peraza
     should use pygame.display.update(Rect) instead)
 '''
 import pygame
-
+import socket
 
 class PygameGame(object):
 
