@@ -1,14 +1,17 @@
+
 '''
 pygamegame.py
 created by Lukas Peraza
  for 15-112 F15 Pygame Optional Lecture, 11/11/15
-- you might want to move the pygame.display.flip() to your redrawAll function,
+- you might want to move the pygame.display.flip() to your 
+ function,
     in case you don't need to update the entire display every frame (then you
     should use pygame.display.update(Rect) instead)
 '''
 import pygame
 import socket
 import scene
+import goal
 
 class BallHogz(object):
 
@@ -39,14 +42,42 @@ class BallHogz(object):
     def timerFired(self, dt):
         pass
 
+    def drawGoals(self, screen):
+        #this draws the goals
+        #TODO: ADD A BOOL TO SWITCH FROM MOVING AND STILL GOALS
+        #the goal's width should fill 3/5ths of half the screen and height should be 1/5th of the screen
+        goalWidth = self.height*.1
+        goalHeight = self.width*.2
+        xRight = goalWidth//2
+        yRight = self.height//2
+        
+        xLeft = self.width - goalWidth//2
+        yLeft = self.height//2
+        
+        self.goals = pygame.sprite.Group()
+        right = goal.Goal(goalWidth, goalHeight, xRight,yRight)
+        self.goals.add(right)
+        left = goal.Goal(goalWidth, goalHeight, xLeft,yLeft)
+        self.goals.add(left)
+
+        
     def redrawAll(self, screen):
         self.s.draw(screen)
+        if(self.s.mode == "game"):
+            if(self.goalsDrawn == False):
+                self.goalsDrawn = True
+                self.drawGoals(screen)
+            else:
+                self.goals.update(self.width, self.height)
+                self.goals.draw(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
         return self._keys.get(key, False)
 
     def __init__(self, width=600, height=400, fps=50, title="Welcome to Ball Hogz!"):
+        self.goalsDrawn = False
+        self.goals = None
         self.width = width
         self.height = height
         self.fps = fps
@@ -66,6 +97,9 @@ class BallHogz(object):
 
         # call game-specific initialization
         self.init()
+    
+        
+        
         playing = True
         while playing:
             time = clock.tick(self.fps)
