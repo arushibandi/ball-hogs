@@ -9,7 +9,7 @@ created by Lukas Peraza
 import pygame
 import socket
 
-class PygameGame(object):
+class BallHogz(object):
 
     def init(self):
         pass
@@ -42,7 +42,7 @@ class PygameGame(object):
         ''' return whether a specific key is being held '''
         return self._keys.get(key, False)
 
-    def __init__(self, width=600, height=400, fps=50, title="112 Pygame Game"):
+    def __init__(self, width=600, height=400, fps=50, title="Welcome to Ball Hogz!"):
         self.width = width
         self.height = height
         self.fps = fps
@@ -93,7 +93,7 @@ class PygameGame(object):
 
 
 def main():
-    game = PygameGame()
+    game = BallHogz()
     game.run()
 
 if __name__ == '__main__':
