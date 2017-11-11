@@ -17,7 +17,7 @@ class BallHogz(object):
         self.scores = [0,0]
 
     def mousePressed(self, x, y):
-        if self.s.mode == "start" or self.s.mode == "game":
+        if self.s.mode == "start" or self.s.mode == "end":
             self.s.mode = "game"
 
     def mouseReleased(self, x, y):
