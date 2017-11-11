@@ -55,28 +55,23 @@ class BallHogz(object):
         yLeft = self.height//2
         
         self.goals = pygame.sprite.Group()
-        right = goal.Goal(goalWidth, goalHeight, xRight,yRight)
+        right = goal.MovingGoal(goalWidth, goalHeight, xRight,yRight, 2)
         self.goals.add(right)
-        left = goal.Goal(goalWidth, goalHeight, xLeft,yLeft)
+        left = goal.MovingGoal(goalWidth, goalHeight, xLeft,yLeft, 2)
         self.goals.add(left)
 
         
     def redrawAll(self, screen):
         self.s.draw(screen)
         if(self.s.mode == "game"):
-            if(self.goalsDrawn == False):
-                self.goalsDrawn = True
-                self.drawGoals(screen)
-            else:
-                self.goals.update(self.width, self.height)
-                self.goals.draw(screen)
+            self.goals.update(self.width, self.height)
+            self.goals.draw(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
         return self._keys.get(key, False)
 
     def __init__(self, width=600, height=400, fps=50, title="Welcome to Ball Hogz!"):
-        self.goalsDrawn = False
         self.goals = None
         self.width = width
         self.height = height
@@ -99,6 +94,7 @@ class BallHogz(object):
         self.init()
     
         
+        self.drawGoals(screen)
         
         playing = True
         while playing:
