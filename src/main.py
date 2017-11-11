@@ -8,14 +8,17 @@ created by Lukas Peraza
 '''
 import pygame
 import socket
+import scene
 
 class BallHogz(object):
 
     def init(self):
-        pass
+        self.s = scene.Scene(self.width, self.height, "start", False)
+        self.scores = [0,0]
 
     def mousePressed(self, x, y):
-        pass
+        if self.s.mode == "start" or self.s.mode == "game":
+            self.s.mode = "game"
 
     def mouseReleased(self, x, y):
         pass
@@ -27,7 +30,8 @@ class BallHogz(object):
         pass
 
     def keyPressed(self, keyCode, modifier):
-        pass
+        if keyCode == 112:
+            self.s.paused = not self.s.paused
 
     def keyReleased(self, keyCode, modifier):
         pass
@@ -36,7 +40,7 @@ class BallHogz(object):
         pass
 
     def redrawAll(self, screen):
-        pass
+        self.s.draw(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
