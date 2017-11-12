@@ -51,16 +51,13 @@ class Scene():
 
     def drawGame(self, screen, scores):
         pygame.font.init()
-        f = pygame.font.SysFont('Comic Sans MS', 20)
+        f = pygame.font.SysFont('Comic Sans MS', 30)
         s_left = f.render("Score: " + str(scores[0]), False, (0, 0, 0))
-        r_size = f.size("Score: " + str(scores[1]))
-        s_right = f.render("Score: " + str(scores[1]), False, (0, 0, 0))
         left = pygame.Rect(0, 0, self.w/2, self.h)
         right = pygame.Rect(self.w/2, 0, self.w, self.h)
         pygame.draw.rect(screen, pygame.Color(173, 235, 235), left)
         pygame.draw.rect(screen, pygame.Color(255, 153, 153), right)
-        screen.blit(s_left, (0,0))
-        screen.blit(s_right, (self.w - r_size[0], 0))
+        screen.blit(s_left, (650,0))
 
     def drawEnd(self, screen):
         pygame.font.init()
