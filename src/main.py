@@ -27,24 +27,26 @@ class BallHogz(object):
 		self.balls = pygame.sprite.Group()
 
 	def mousePressed(self, x, y):
-		if (400,650)<pygame.mouse.get_pos(x)<(550,700):
-			self.goalWidth = self.width*.1
-			self.goalHeight = self.width*.1
-			if self.s.mode == "start" or self.s.mode == "end":
+		if self.s.mode == "start" or self.s.mode == "end":
 				self.s.mode = "game"
-
-		elif (650,650)<pygame.mouse.get_pos(x)<(800,700):
-			self.goalWidth = self.width*.05
-			self.goalHeight = self.width*.05
-			if self.s.mode == "start" or self.s.mode == "end":
-				self.s.mode = "game"
-
-		elif (900,650)<pygame.mouse.get_pos(x)<(1050,700):
-			self.goalWidth = 10
-			self.goalHeight = 10
-
-			if self.s.mode == "start" or self.s.mode == "end":
-				self.s.mode = "game"
+		#if (400,650)<pygame.mouse.get_pos(x)<(550,700):
+		#	self.goalWidth = self.width*.1
+		#	self.goalHeight = self.width*.1
+		#	if self.s.mode == "start" or self.s.mode == "end":
+		#		self.s.mode = "game"
+#
+		#elif (650,650)<pygame.mouse.get_pos(x)<(800,700):
+		#	self.goalWidth = self.width*.05
+		#	self.goalHeight = self.width*.025
+		#	if self.s.mode == "start" or self.s.mode == "end":
+		#		self.s.mode = "game"
+#
+		#elif (900,650)<pygame.mouse.get_pos(x)<(1050,700):
+		#	self.goalWidth = self.width*.05
+		#	self.goalHeight = self.width*.00125
+#
+		#	if self.s.mode == "start" or self.s.mode == "end":
+		#		self.s.mode = "game"
 
 	def mouseReleased(self, x, y):
 		pass
@@ -88,7 +90,6 @@ class BallHogz(object):
 
 		angle = self.p1.getCollision(screen, self.balls.sprites()[0].getLocation()[0], self.balls.sprites()[0].getLocation()[1], self.balls.sprites()[0].radius)
 		if angle != None:
-			print(angle)
 			self.balls.sprites()[0].bounce(angle)
 
 		if isGoalCollision(self.balls, self.goals) != None:
@@ -96,7 +97,6 @@ class BallHogz(object):
 				self.scores[1] += 1
 			elif isGoalCollision(self.balls, self.goals) == self.goals.sprites()[0]: 
 				self.scores[0] += 1
-			print(self.scores)
 
 
 	def drawGoals(self, screen):
@@ -105,17 +105,17 @@ class BallHogz(object):
 		#the goal's width should fill 3/5ths of half the screen and height should be 1/5th of the screen
 		goalWidth = self.height*.1
 		goalHeight = self.width*.2
-		xRight = goalWidth//2
+		xRight = self.goalWidth2//2
 		yRight = self.height//2
 		
-		xLeft = self.width - goalWidth//2
+		xLeft = self.width - self.goalWidth2//2
 		yLeft = self.height//2
 		if(self.moving):
-			right = goal.MovingGoal(goalWidth, goalHeight, xRight,yRight, 2)
-			left = goal.MovingGoal(goalWidth, goalHeight, xLeft,yLeft, 2)
+			right = goal.MovingGoal(self.goalWidth, self.goalHeight, xRight,yRight, 2)
+			left = goal.MovingGoal(self.goalWidth2, self.goalHeight2, xLeft,yLeft, 2)
 		else:
-			right = goal.Goal(goalWidth, goalHeight, xRight,yRight)
-			left = goal.Goal(goalWidth, goalHeight, xLeft,yLeft)
+			right = goal.Goal(self.goalWidth, self.goalHeight, xRight,yRight)
+			left = goal.Goal(self.goalWidth2, self.goalHeight2, xLeft,yLeft)
 			
 		self.goals.add(right)
 		self.goals.add(left)
@@ -152,8 +152,10 @@ class BallHogz(object):
 		self.fps = fps
 		self.title = title
 		self.bgColor = (255, 255, 255)
-		self.goalWidth = self.height*.1
-		self.goalHeight = self.width*.2
+		self.goalWidth = self.height*.05
+		self.goalHeight = self.width*.05
+		self.goalWidth2 = self.height*.1
+		self.goalHeight2 = self.width*.4
 		pygame.init()
 
 	def run(self):
