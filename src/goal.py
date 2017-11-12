@@ -12,7 +12,6 @@ class Goal(pygame.sprite.Sprite):
     
     #this function will draw the goals
     def __init__(self,  goalWidth, goalHeight, x, y):
-        print("goals")
         #first send the new goal object to the sprite superclass
         super(Goal, self).__init__()
         

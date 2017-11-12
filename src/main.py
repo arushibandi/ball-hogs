@@ -16,15 +16,15 @@ import player
 import ball
 
 class BallHogz(object):
-<<<<<<< HEAD
 	
 	def init(self):
-		self.s = scene.Scene(self.width, self.height, "start", False)
+
 		self.scores = [0,0]
 		self.p1 = player.Player(0,0)
 		self.goals = pygame.sprite.Group()
 		self.moving = False
 		self.balls = pygame.sprite.Group()
+		self.s = scene.Scene(self.width, self.height, self.moving, "start", False)
 
 	def mousePressed(self, x, y):
 		if self.s.mode == "start" or self.s.mode == "end":
@@ -60,7 +60,6 @@ class BallHogz(object):
 		pass
 
 	def timerFired(self, dt, screen):
-
 		def isGoalCollision(balls, goal):
 			collided = False
 			a = pygame.sprite.spritecollideany(balls.sprites()[0], goal, collided)
@@ -163,7 +162,6 @@ class BallHogz(object):
 		datatuple, masktuple = pygame.cursors.compile( clear_arrow,
 								  black='X', white='.', xor='o' )
 		pygame.mouse.set_cursor( (24,24), (0,0), datatuple, masktuple )
-		print(pygame.mouse.get_cursor())
 
 		clock = pygame.time.Clock()
 		modes = pygame.display.list_modes(16)
