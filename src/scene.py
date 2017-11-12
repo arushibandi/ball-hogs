@@ -38,7 +38,6 @@ class Scene():
 		pygame.draw.rect(screen, pygame.Color(255, 153, 153), right)
 		screen.blit(s_left, (0,0))
 		screen.blit(s_right, (self.w - r_size[0], 0))
-		pygame.draw.rect(screen, pygame.Color(255,250,250), center)
 
 	def drawEnd(self, screen):
 		pygame.font.init()
