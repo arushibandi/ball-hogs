@@ -7,11 +7,11 @@ class Ball(pygame.sprite.Sprite):
     
     def __init__(self, xCenter, yCenter):
         super(Ball, self).__init__()
-        self.radius = 10
+        self.radius = 25
         self.xCenter = xCenter
         self.yCenter = yCenter
-        self.xSpeed = 5
-        self.ySpeed = 5
+        self.xSpeed = 10
+        self.ySpeed = 10
         self.boost = False
         self.rect = pygame.Rect(xCenter - self.radius, yCenter - self.radius,
                                 2 * self.radius, 2 * self.radius)
@@ -47,5 +47,8 @@ class Ball(pygame.sprite.Sprite):
 
 
     def bounce(self, angle):
-        self.xSpeed *= math.cos(angle)
-        self.ySpeed *= math.sin(angle)
+
+        self.xSpeed *= -1
+
+        #self.xSpeed *= math.cos(math.pi - angle)
+        #self.ySpeed *= math.sin(math.pi - angle)

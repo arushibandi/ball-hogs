@@ -39,7 +39,6 @@ class BallHogz(object):
 		pass
 
 	def keyPressed(self, keyCode, modifier):
-		print(keyCode)
 		if keyCode == 112:
 			self.s.paused = not self.s.paused
 		elif keyCode == 276:
@@ -59,15 +58,16 @@ class BallHogz(object):
 	def keyReleased(self, keyCode, modifier):
 		pass
 
-	def timerFired(self, dt):
+	def timerFired(self, dt, screen):
 
 		def isGoalCollision(balls, goal):
 			collided = False
 			a = pygame.sprite.spritecollideany(balls.sprites()[0], goal, collided)
 			return a
 
-		angle = self.p1.getCollision(self.balls.sprites()[0].getLocation()[0], self.balls.sprites()[0].getLocation()[1], self.balls.sprites()[0].radius)
+		angle = self.p1.getCollision(screen, self.balls.sprites()[0].getLocation()[0], self.balls.sprites()[0].getLocation()[1], self.balls.sprites()[0].radius)
 		if angle != None:
+			print(angle)
 			self.balls.sprites()[0].bounce(angle)
 
 		if isGoalCollision(self.balls, self.goals) != None:
@@ -108,7 +108,7 @@ class BallHogz(object):
 		self.balls.add(ball1)
 		
 	def redrawAll(self, screen):
-		self.s.draw(screen)
+		self.s.draw(screen, self.scores)
 		if(self.s.mode == "game"):
 			self.goals.update(self.width, self.height)
 			self.goals.draw(screen)
@@ -186,7 +186,7 @@ class BallHogz(object):
 		playing = True
 		while playing:
 			time = clock.tick(self.fps)
-			self.timerFired(time)
+			self.timerFired(time, screen)
 			for event in pygame.event.get():
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 					self.mousePressed(*(event.pos))
