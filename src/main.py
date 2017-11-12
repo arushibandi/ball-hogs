@@ -12,12 +12,16 @@ import pygame
 import socket
 import scene
 import goal
+import ball
 
 class BallHogz(object):
 
     def init(self):
         self.s = scene.Scene(self.width, self.height, "start", False)
         self.scores = [0,0]
+        self.goals = pygame.sprite.Group()
+        self.moving = False
+        self.balls = pygame.sprite.Group()
 
     def mousePressed(self, x, y):
         if self.s.mode == "start" or self.s.mode == "end":
@@ -35,6 +39,8 @@ class BallHogz(object):
     def keyPressed(self, keyCode, modifier):
         if keyCode == 112:
             self.s.paused = not self.s.paused
+        if(keyCode == pygame.K_m):
+            self.moving = not self.moving
 
     def keyReleased(self, keyCode, modifier):
         pass
@@ -53,25 +59,39 @@ class BallHogz(object):
         
         xLeft = self.width - goalWidth//2
         yLeft = self.height//2
-        
-        self.goals = pygame.sprite.Group()
-        right = goal.MovingGoal(goalWidth, goalHeight, xRight,yRight, 2)
+        if(self.moving):
+            right = goal.MovingGoal(goalWidth, goalHeight, xRight,yRight, 2)
+            left = goal.MovingGoal(goalWidth, goalHeight, xLeft,yLeft, 2)
+        else:
+            right = goal.Goal(goalWidth, goalHeight, xRight,yRight)
+            left = goal.Goal(goalWidth, goalHeight, xLeft,yLeft)
+            
         self.goals.add(right)
-        left = goal.MovingGoal(goalWidth, goalHeight, xLeft,yLeft, 2)
         self.goals.add(left)
+     
+    def drawBalls(self,screen):
+        #this draws the ball
+        xCenter = self.height//2
+        yCenter = self.height//2
+        
+        self.balls = pygame.sprite.Group()
+        ball1 = ball.Ball(xCenter,yCenter)
+        self.balls.add(ball1)
         
     def redrawAll(self, screen):
         self.s.draw(screen)
         if(self.s.mode == "game"):
             self.goals.update(self.width, self.height)
             self.goals.draw(screen)
+            self.balls.update(self.width,self.height)
+            self.balls.draw(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
         return self._keys.get(key, False)
 
     def __init__(self, width=600, height=400, fps=50, title="Welcome to Ball Hogz!"):
-        self.goals = None
+        
         self.width = width
         self.height = height
         self.fps = fps
@@ -92,8 +112,9 @@ class BallHogz(object):
         # call game-specific initialization
         self.init()
     
-        
+        self.drawBalls(screen)
         self.drawGoals(screen)
+        
         
         playing = True
         while playing:
