@@ -1,106 +1,233 @@
+
+'''
+pygamegame.py
+created by Lukas Peraza
+ for 15-112 F15 Pygame Optional Lecture, 11/11/15
+- you might want to move the pygame.display.flip() to your 
+ function,
+    in case you don't need to update the entire display every frame (then you
+    should use pygame.display.update(Rect) instead)
+'''
 import pygame
-import random
+import socket
+import scene
+import goal
+import player
+import ball
 
-#OVERVIEW:
-#create a goal by first creating the goal group -- goals = pygame.sprite.Group()
-#then add the type of goal you want and where it should be on the screen.
-#For example, for a moving goal on the right side of the screen:
-#right = MovingGoal(goalWidth,goalHeight,xPosition,yPosition, speed). x and y should be set to where the center of the goal should be
-#goals.add(right) will put the right goal in your goals group
-#goals.draw(screen) will draw the goals on the screen, after screen is created (screen.fill(colors))
-class Goal(pygame.sprite.Sprite):
+class BallHogz(object):
     
-    #this function will draw the goals
-    def __init__(self,  goalWidth, goalHeight, x, y):
-        print("goals")
-        #first send the new goal object to the sprite superclass
-        super(Goal, self).__init__()
-        
-        self.x, self.y = x, y
-        self.goalWidth = goalWidth
-        self.goalHeight = goalHeight
+    def init(self):
+        self.moving = True
+        self.s = scene.Scene(self.width, self.height, self.moving,"start", False)
+        self.scores = [0,0]
+        self.p1 = player.Player(0,0)
+        self.goals = pygame.sprite.Group()
+        self.goalsDrawn = False
+        self.balls = pygame.sprite.Group()
 
-        self.rect = pygame.Rect(x - self.goalWidth, y - self.goalHeight,
-                                2 * self.goalWidth, 2 * self.goalHeight)
-        
-        #a surface is needed to place the goal on
-        self.image = pygame.Surface((2 * self.goalWidth, 2 * self.goalHeight))  # make it transparent
-        self.image = self.image.convert_alpha()
-        #random colors
-        
-        self.image.fill((255,255,255))
-        
-    def getRect(self):  # GET REKT
-        self.rect = pygame.Rect(self.x - self.goalWidth, self.y - self.goalHeight,
-                                2 * self.goalWidth, 2 * self.goalHeight)
-                                
-    def getLocation(self):
-        return goalWidth, self.goalHeight, self.x, self.y, self.speed
+    def mousePressed(self, x, y):
+        if self.s.mode == "start" or self.s.mode == "end":
+            self.s.mode = "game"
+            
 
-    def update(self, screenWidth, screenHeight):
-        self.getRect()
+    def mouseReleased(self, x, y):
+        pass
+
+    def mouseMotion(self, x, y):
+        self.p1.update(x, y)
+
+    def mouseDrag(self, x, y):
+        pass
+
+    def keyPressed(self, keyCode, modifier):
+        print(keyCode)
+        if keyCode == 112:
+            self.s.paused = not self.s.paused
+        elif keyCode == 276:
+            self.p1.rotateLeft()
+        elif keyCode == 275:
+            self.p1.rotateRight()
+        elif keyCode == 273 and self.s.mode == "start":
+            self.p1.scale(1)
+        elif keyCode == 274 and self.s.mode == "start":
+            self.p1.scale(-1)
+        elif keyCode == 101:
+            pygame.quit()
+        elif keyCode == 109 and self.s.mode=="start":
+            self.moving = not self.moving
+            self.s.moving = not self.s.moving
+
+    def keyReleased(self, keyCode, modifier):
+        pass
+
+    def timerFired(self, dt):
+
+        def isGoalCollision(balls, goal):
+            collided = False
+            a = pygame.sprite.spritecollideany(balls.sprites()[0], goal, collided)
+            return a
+
+        angle = self.p1.getCollision(self.balls.sprites()[0].getLocation()[0], self.balls.sprites()[0].getLocation()[1], self.balls.sprites()[0].radius)
+        if angle != None:
+            self.balls.sprites()[0].bounce(angle)
+
+        if isGoalCollision(self.balls, self.goals) != None:
+            if isGoalCollision(self.balls, self.goals) == self.goals.sprites()[1]:
+                self.scores[1] += 1
+            elif isGoalCollision(self.balls, self.goals) == self.goals.sprites()[0]: 
+                self.scores[0] += 1
+
+
+    def drawGoals(self, screen):
+        #this draws the goals
+        #TODO: ADD A BOOL TO SWITCH FROM MOVING AND STILL GOALS
+        #the goal's width should fill 3/5ths of half the screen and height should be 1/5th of the screen
+        goalWidth = self.height*.1
+        goalHeight = self.width*.2
+        xRight = goalWidth//2
+        yRight = self.height//2
+        
+        xLeft = self.width - goalWidth//2
+        yLeft = self.height//2
+        if(self.moving):
+            right = goal.MovingGoal(goalWidth, goalHeight, xRight,yRight, 2)
+            left = goal.MovingGoal(goalWidth, goalHeight, xLeft,yLeft, 2)
+        else:
+            right = goal.Goal(goalWidth, goalHeight, xRight,yRight)
+            left = goal.Goal(goalWidth, goalHeight, xLeft,yLeft)
+            
+        self.goals.add(right)
+        self.goals.add(left)
+     
+    def drawBalls(self,screen):
+        #this draws the ball
+        xCenter = self.height//2
+        yCenter = self.height//2
+        
+        self.balls = pygame.sprite.Group()
+        ball1 = ball.Ball(xCenter,yCenter)
+        self.balls.add(ball1)
+        
+    def redrawAll(self, screen):
+        if(self.s.mode == "start"):
+            pygame.font.init()
+            f = pygame.font.SysFont('Comic Sans MS', 30)
+            moveS = "Toggle goals by pressing m. The current state is %r"%self.moving
+            t3_size = f.size(moveS)
+            t3 = f.render(moveS,False, (0, 230, 172))
+            screen.blit(t3, (266, 418))
+        self.s.draw(screen)
+        if(self.s.mode == "game"):
+            self.goals.update(self.width, self.height)
+            self.goals.draw(screen)
+            self.balls.update(self.width,self.height)
+            self.balls.draw(screen)
+        self.p1.draw(screen)
+
+
+    def isKeyPressed(self, key):
+        ''' return whether a specific key is being held '''
+        return self._keys.get(key, False)
+
+    def __init__(self, width=600, height=400, fps=50, title="Welcome to Ball Hogz!"):
+
+        self.goals = None
+        self.width = width
+        self.height = height
+        self.fps = fps
+        self.title = title
+        self.bgColor = (255, 255, 255)
+        pygame.init()
+
+    def run(self):
+
+        clear_arrow = (
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ")
+
+        datatuple, masktuple = pygame.cursors.compile( clear_arrow,
+                                  black='X', white='.', xor='o' )
+        pygame.mouse.set_cursor( (24,24), (0,0), datatuple, masktuple )
+        print(pygame.mouse.get_cursor())
+
+        clock = pygame.time.Clock()
+        modes = pygame.display.list_modes(16)
+        screen = pygame.display.set_mode([1000,750])
+        self.width, self.height = pygame.display.get_surface().get_size()
+        # set the title of the window
+        pygame.display.set_caption(self.title)
+
+        # stores all the keys currently being held down
+        self._keys = dict()
+
+        # call game-specific initialization
+        self.init()
     
+        self.drawBalls(screen)
         
-class MovingGoal(Goal):
-    def __init__(self,  goalWidth, goalHeight, x, y, speed):
-        #first send the new goal object to the sprite superclass
-        super(Goal, self).__init__()
         
-        self.x, self.y = x, y
-        self.speed = speed
-        
-        self.goalWidth = goalWidth
-        self.goalHeight = goalHeight
-
-        self.rect = pygame.Rect(x - self.goalWidth, y - self.goalHeight,
-                                2 * self.goalWidth, 2 * self.goalHeight)
-        
-        #a surface is needed to place the goal on
-        self.image = pygame.Surface((2 * self.goalWidth, 2 * self.goalHeight))  # make it transparent
-        self.image = self.image.convert_alpha()
-        #random colors
-        
-        self.image.fill((255,255,255))
-        
-    def getLocation(self):
-        return goalWidth, self.goalHeight, self.x, self.y, self.speed
-        
-    def getRect(self):  # GET REKT
-        self.rect = pygame.Rect(self.x - self.goalWidth, self.y - self.goalHeight,
-                                2 * self.goalWidth, 2 * self.goalHeight)
-
-    def update(self, screenWidth, screenHeight):
-        self.y +=self.speed
-        if(self.y+self.goalHeight>=screenHeight):
-            self.y-=self.speed
-            self.speed=-self.speed
-        elif(self.y-self.goalHeight<=40):
-            self.y-=self.speed
-            self.speed=-self.speed
-        self.getRect()
-        
-pygame.init()
-screen = pygame.display.set_mode((500, 500))
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((500, 500))
-
-goals = pygame.sprite.Group()
-
-ball1 = Goal(110,220,25,250)
-goals.add(ball1)
-goals.draw(screen)            
-
-
-playing = True
-while playing:
-    clock.tick(50)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            playing = False
-    goals.update(500,500)
-    screen.fill((0, 0, 0))
-    goals.draw(screen)
-    pygame.display.flip()
-pygame.quit()
-
+        #pygame.mixer.music.load("/Users/michaelkronovet/Desktop/15-112/Hack112/Music.mp3")
+        #pygame.mixer.music.play(-1)
     
+        playing = True
+        while playing:
+            time = clock.tick(self.fps)
+            self.timerFired(time)
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    if(not self.goalsDrawn):
+                        self.drawGoals(screen)
+                        self.goalsDrawn = True
+                    self.mousePressed(*(event.pos))
+                elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                    self.mouseReleased(*(event.pos))
+                elif (event.type == pygame.MOUSEMOTION and
+                      event.buttons == (0, 0, 0)):
+                    self.mouseMotion(*(event.pos))
+                elif (event.type == pygame.MOUSEMOTION and
+                      event.buttons[0] == 1):
+                    self.mouseDrag(*(event.pos))
+                elif event.type == pygame.KEYDOWN:
+                    self._keys[event.key] = True
+                    self.keyPressed(event.key, event.mod)
+                elif event.type == pygame.KEYUP:
+                    self._keys[event.key] = False
+                    self.keyReleased(event.key, event.mod)
+                elif event.type == pygame.QUIT:
+                    playing = False
+            screen.fill(self.bgColor)
+            self.redrawAll(screen)
+            pygame.display.flip()
+
+        pygame.quit()
+
+def main():
+    game = BallHogz()
+    game.run()
+
+if __name__ == '__main__':
+    main()
+
