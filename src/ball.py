@@ -1,6 +1,7 @@
 # this creates the ball class and related functions
 import pygame
 import random 
+import math
 
 class Ball(pygame.sprite.Sprite):
     
@@ -42,4 +43,9 @@ class Ball(pygame.sprite.Sprite):
         self.getRect()
     
     def getLocation(self):
-        return [xCenter,yCenter]
+        return [self.xCenter, self.yCenter]
+
+
+    def bounce(self, angle):
+        self.xSpeed *= math.cos(angle)
+        self.ySpeed *= math.sin(angle)
