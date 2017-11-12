@@ -91,9 +91,9 @@ class BallHogz(object):
 
 		if isGoalCollision(self.balls, self.goals) != None:
 			if isGoalCollision(self.balls, self.goals) == self.goals.sprites()[1]:
-				self.scores[0] -= 1
-			elif isGoalCollision(self.balls, self.goals) == self.goals.sprites()[0]: 
 				self.scores[0] += 1
+			elif isGoalCollision(self.balls, self.goals) == self.goals.sprites()[0]: 
+				self.scores[0] -= 1
 		if self.scores[0] >=10 or self.scores[1] >=10:
 			print("hi")
 			self.mode = "end"

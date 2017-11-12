@@ -27,7 +27,11 @@ class Scene():
         pygame.draw.rect(screen, pygame.Color(204, 255, 220), self.board)
         screen.blit(t1, (self.w/2 - t1_size[0]/2,self.h/2 - 2*t1_size[1]))
         screen.blit(t2, (self.w/2 - t2_size[0]/2,self.h/2 - t1_size[1]))
-        moveS = "Toggle goals by pressing m. The current state is %r"%self.moving
+        if(self.moving):
+            moving = "moving"
+        else:
+            moving = "still"
+        moveS = "Toggle goals by pressing m. The current state is %s"%moving
         t3_size = f.size(moveS)
         t3 = f.render(moveS,False, (0, 230, 172))
         screen.blit(t3, (self.w/2 - t2_size[0]*.80,50))
