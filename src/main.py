@@ -40,6 +40,7 @@ class BallHogz(object):
 		pass
 
 	def keyPressed(self, keyCode, modifier):
+		print(keyCode)
 		if keyCode == 112:
 			self.s.paused = not self.s.paused
 		elif keyCode == 276:
@@ -50,6 +51,9 @@ class BallHogz(object):
 			self.p1.scale(1)
 		elif keyCode == 274 and self.s.mode == "start":
 			self.p1.scale(-1)
+		elif keyCode == 109:
+			self.moving = not self.moving
+			print(self.moving)
 		elif keyCode == 101:
 			pygame.quit()
 		
