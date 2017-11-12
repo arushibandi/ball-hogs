@@ -18,11 +18,12 @@ import ball
 class BallHogz(object):
     
     def init(self):
-        self.s = scene.Scene(self.width, self.height, "start", False)
+        self.moving = True
+        self.s = scene.Scene(self.width, self.height, self.moving,"start", False)
         self.scores = [0,0]
         self.p1 = player.Player(0,0)
         self.goals = pygame.sprite.Group()
-        self.moving = True
+        self.goalsDrawn = False
         self.balls = pygame.sprite.Group()
 
     def mousePressed(self, x, y):
@@ -52,9 +53,9 @@ class BallHogz(object):
             self.p1.scale(-1)
         elif keyCode == 101:
             pygame.quit()
-        
-        if(keyCode == pygame.K_m):
+        elif keyCode == 109 and self.s.mode=="start":
             self.moving = not self.moving
+            self.s.moving = not self.s.moving
 
     def keyReleased(self, keyCode, modifier):
         pass
@@ -108,6 +109,13 @@ class BallHogz(object):
         self.balls.add(ball1)
         
     def redrawAll(self, screen):
+        if(self.s.mode == "start"):
+            pygame.font.init()
+            f = pygame.font.SysFont('Comic Sans MS', 30)
+            moveS = "Toggle goals by pressing m. The current state is %r"%self.moving
+            t3_size = f.size(moveS)
+            t3 = f.render(moveS,False, (0, 230, 172))
+            screen.blit(t3, (266, 418))
         self.s.draw(screen)
         if(self.s.mode == "game"):
             self.goals.update(self.width, self.height)
@@ -178,7 +186,7 @@ class BallHogz(object):
         self.init()
     
         self.drawBalls(screen)
-        self.drawGoals(screen)
+        
         
         #pygame.mixer.music.load("/Users/michaelkronovet/Desktop/15-112/Hack112/Music.mp3")
         #pygame.mixer.music.play(-1)
@@ -189,6 +197,7 @@ class BallHogz(object):
             self.timerFired(time)
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.drawGoals(screen)
                     self.mousePressed(*(event.pos))
                 elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     self.mouseReleased(*(event.pos))
