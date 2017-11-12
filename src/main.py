@@ -18,6 +18,8 @@ class BallHogz(object):
     def init(self):
         self.s = scene.Scene(self.width, self.height, "start", False)
         self.scores = [0,0]
+        self.goals = pygame.sprite.Group()
+        self.moving = False
 
     def mousePressed(self, x, y):
         if self.s.mode == "start" or self.s.mode == "end":
@@ -35,6 +37,8 @@ class BallHogz(object):
     def keyPressed(self, keyCode, modifier):
         if keyCode == 112:
             self.s.paused = not self.s.paused
+        if(keyCode == pygame.K_m):
+            self.moving = not self.moving
 
     def keyReleased(self, keyCode, modifier):
         pass
@@ -53,13 +57,15 @@ class BallHogz(object):
         
         xLeft = self.width - goalWidth//2
         yLeft = self.height//2
-        
-        self.goals = pygame.sprite.Group()
-        right = goal.MovingGoal(goalWidth, goalHeight, xRight,yRight, 2)
+        if(self.moving):
+            right = goal.MovingGoal(goalWidth, goalHeight, xRight,yRight, 2)
+            left = goal.MovingGoal(goalWidth, goalHeight, xLeft,yLeft, 2)
+        else:
+            right = goal.Goal(goalWidth, goalHeight, xRight,yRight)
+            left = goal.Goal(goalWidth, goalHeight, xLeft,yLeft)
+            
         self.goals.add(right)
-        left = goal.MovingGoal(goalWidth, goalHeight, xLeft,yLeft, 2)
         self.goals.add(left)
-
         
     def redrawAll(self, screen):
         self.s.draw(screen)
@@ -72,7 +78,7 @@ class BallHogz(object):
         return self._keys.get(key, False)
 
     def __init__(self, width=600, height=400, fps=50, title="Welcome to Ball Hogz!"):
-        self.goals = None
+        
         self.width = width
         self.height = height
         self.fps = fps
