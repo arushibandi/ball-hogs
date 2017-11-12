@@ -78,4 +78,29 @@ class MovingGoal(Goal):
             self.y-=self.speed
             self.speed=-self.speed
         self.getRect()
+        
+pygame.init()
+screen = pygame.display.set_mode((500, 500))
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode((500, 500))
+
+goals = pygame.sprite.Group()
+
+ball1 = Goal(110,220,25,250)
+goals.add(ball1)
+goals.draw(screen)            
+
+
+playing = True
+while playing:
+    clock.tick(50)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            playing = False
+    goals.update(500,500)
+    screen.fill((0, 0, 0))
+    goals.draw(screen)
+    pygame.display.flip()
+pygame.quit()
+
     

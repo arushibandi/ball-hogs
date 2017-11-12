@@ -5,8 +5,8 @@ created by Lukas Peraza
  for 15-112 F15 Pygame Optional Lecture, 11/11/15
 - you might want to move the pygame.display.flip() to your 
  function,
-	in case you don't need to update the entire display every frame (then you
-	should use pygame.display.update(Rect) instead)
+    in case you don't need to update the entire display every frame (then you
+    should use pygame.display.update(Rect) instead)
 '''
 import pygame
 import socket
@@ -16,6 +16,7 @@ import player
 import ball
 
 class BallHogz(object):
+<<<<<<< HEAD
 	
 	def init(self):
 		self.s = scene.Scene(self.width, self.height, "start", False)
@@ -213,8 +214,9 @@ class BallHogz(object):
 		pygame.quit()
 
 def main():
-	game = BallHogz()
-	game.run()
+    game = BallHogz()
+    game.run()
 
 if __name__ == '__main__':
-	main()
+    main()
+
