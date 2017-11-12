@@ -179,8 +179,8 @@ class BallHogz(object):
 		self.drawBalls(screen)
 		self.drawGoals(screen)
 		
-		#pygame.mixer.music.load("/Users/michaelkronovet/Desktop/15-112/Hack112/Music.mp3")
-		#pygame.mixer.music.play(-1)
+		pygame.mixer.music.load("../Music.mp3")
+		pygame.mixer.music.play(-1)
 	
 		playing = True
 		while playing:
