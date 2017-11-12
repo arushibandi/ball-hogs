@@ -12,6 +12,7 @@ import pygame
 import socket
 import scene
 import goal
+import player
 import ball
 
 class BallHogz(object):
@@ -19,6 +20,7 @@ class BallHogz(object):
     def init(self):
         self.s = scene.Scene(self.width, self.height, "start", False)
         self.scores = [0,0]
+        self.p1 = player.Player(0,0)
         self.goals = pygame.sprite.Group()
         self.moving = False
         self.balls = pygame.sprite.Group()
@@ -31,14 +33,22 @@ class BallHogz(object):
         pass
 
     def mouseMotion(self, x, y):
-        pass
+        self.p1.update(x, y)
 
     def mouseDrag(self, x, y):
         pass
 
     def keyPressed(self, keyCode, modifier):
+        print(keyCode)
         if keyCode == 112:
             self.s.paused = not self.s.paused
+        elif keyCode == 276:
+            self.p1.rotateLeft()
+        elif keyCode == 275:
+            self.p1.rotateRight()
+        elif keyCode == 101:
+            pygame.quit()
+        
         if(keyCode == pygame.K_m):
             self.moving = not self.moving
 
@@ -83,6 +93,8 @@ class BallHogz(object):
         if(self.s.mode == "game"):
             self.goals.update(self.width, self.height)
             self.goals.draw(screen)
+        self.p1.draw(screen)
+
             self.balls.update(self.width,self.height)
             self.balls.draw(screen)
 
@@ -91,7 +103,8 @@ class BallHogz(object):
         return self._keys.get(key, False)
 
     def __init__(self, width=600, height=400, fps=50, title="Welcome to Ball Hogz!"):
-        
+
+        self.goals = None
         self.width = width
         self.height = height
         self.fps = fps
@@ -101,8 +114,41 @@ class BallHogz(object):
 
     def run(self):
 
+        clear_arrow = (
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ",
+      "                        ")
+
+        datatuple, masktuple = pygame.cursors.compile( clear_arrow,
+                                  black='X', white='.', xor='o' )
+        pygame.mouse.set_cursor( (24,24), (0,0), datatuple, masktuple )
+        print(pygame.mouse.get_cursor())
+
         clock = pygame.time.Clock()
-        screen = pygame.display.set_mode((self.width, self.height))
+        modes = pygame.display.list_modes(16)
+        screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.width, self.height = pygame.display.get_surface().get_size()
         # set the title of the window
         pygame.display.set_caption(self.title)
 

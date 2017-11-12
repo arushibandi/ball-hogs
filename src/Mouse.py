@@ -77,7 +77,7 @@ def timerFired(data):
 
 def redrawAll(canvas, data):
     canvas.create_polygon(data.L)
-    canvas.create_polygon([[250, 250], [200.0, 300.0], [213.0, 287.0], [188.0, 312.0], [192.0, 308.0], [217.0, 283.0], [217.0, 283.0]])
+    #canvas.create_polygon([[250, 250], [200.0, 300.0], [213.0, 287.0], [188.0, 312.0], [192.0, 308.0], [217.0, 283.0], [217.0, 283.0]])
 
 
 def run(width=300, height=300):
