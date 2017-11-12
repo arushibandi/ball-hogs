@@ -18,16 +18,33 @@ import ball
 class BallHogz(object):
 	
 	def init(self):
-		self.s = scene.Scene(self.width, self.height, "start", False)
+		self.moving = True
+		self.s = scene.Scene(self.width, self.height, self.moving,"start", False)
 		self.scores = [0,0]
 		self.p1 = player.Player(0,0)
 		self.goals = pygame.sprite.Group()
-		self.moving = False
+		self.goalsDrawn = False
 		self.balls = pygame.sprite.Group()
 
 	def mousePressed(self, x, y):
-		if self.s.mode == "start" or self.s.mode == "end":
-			self.s.mode = "game"
+		if (400,650)<pygame.mouse.get_pos(x)<(550,700):
+			self.goalWidth = self.width*.1
+			self.goalHeight = self.width*.1
+			if self.s.mode == "start" or self.s.mode == "end":
+				self.s.mode = "game"
+
+		elif (650,650)<pygame.mouse.get_pos(x)<(800,700):
+			self.goalWidth = self.width*.05
+			self.goalHeight = self.width*.05
+			if self.s.mode == "start" or self.s.mode == "end":
+				self.s.mode = "game"
+
+		elif (900,650)<pygame.mouse.get_pos(x)<(1050,700):
+			self.goalWidth = 10
+			self.goalHeight = 10
+
+			if self.s.mode == "start" or self.s.mode == "end":
+				self.s.mode = "game"
 
 	def mouseReleased(self, x, y):
 		pass
@@ -53,8 +70,9 @@ class BallHogz(object):
 		elif keyCode == 101:
 			pygame.quit()
 		
-		if(keyCode == pygame.K_m):
+		elif keyCode == 109 and self.s.mode=="start":
 			self.moving = not self.moving
+			self.s.moving = not self.s.moving
 
 	def keyReleased(self, keyCode, modifier):
 		pass
@@ -68,6 +86,7 @@ class BallHogz(object):
 
 		angle = self.p1.getCollision(self.balls.sprites()[0].getLocation()[0], self.balls.sprites()[0].getLocation()[1], self.balls.sprites()[0].radius)
 		if angle != None:
+			print(angle)
 			self.balls.sprites()[0].bounce(angle)
 
 		if isGoalCollision(self.balls, self.goals) != None:
@@ -75,6 +94,7 @@ class BallHogz(object):
 				self.scores[1] += 1
 			elif isGoalCollision(self.balls, self.goals) == self.goals.sprites()[0]: 
 				self.scores[0] += 1
+			print(self.scores)
 
 
 	def drawGoals(self, screen):
@@ -108,6 +128,13 @@ class BallHogz(object):
 		self.balls.add(ball1)
 		
 	def redrawAll(self, screen):
+		if(self.s.mode == "start"):
+			pygame.font.init()
+			f = pygame.font.SysFont('Comic Sans MS', 30)
+			moveS = "Toggle goals by pressing m. The current state is %r"%self.moving
+			t3_size = f.size(moveS)
+			t3 = f.render(moveS,False, (0, 230, 172))
+			screen.blit(t3, (266, 418))
 		self.s.draw(screen)
 		if(self.s.mode == "game"):
 			self.goals.update(self.width, self.height)
@@ -129,6 +156,8 @@ class BallHogz(object):
 		self.fps = fps
 		self.title = title
 		self.bgColor = (255, 255, 255)
+		self.goalWidth = self.height*.1
+		self.goalHeight = self.width*.2
 		pygame.init()
 
 	def run(self):
@@ -178,7 +207,6 @@ class BallHogz(object):
 		self.init()
 	
 		self.drawBalls(screen)
-		self.drawGoals(screen)
 		
 		#pygame.mixer.music.load("/Users/michaelkronovet/Desktop/15-112/Hack112/Music.mp3")
 		#pygame.mixer.music.play(-1)
@@ -189,6 +217,9 @@ class BallHogz(object):
 			self.timerFired(time)
 			for event in pygame.event.get():
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+					if(not self.goalsDrawn):
+						self.drawGoals(screen)
+						self.goalsDrawn = True
 					self.mousePressed(*(event.pos))
 				elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
 					self.mouseReleased(*(event.pos))

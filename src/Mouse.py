@@ -1,6 +1,6 @@
 import math
 import cmath
-from tkinter import *
+from Tkinter import *
 '''class Mouse(object):
     def init(self, PID, x, y, size = 10):
         self.PID = PID
