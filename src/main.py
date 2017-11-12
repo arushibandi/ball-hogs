@@ -91,9 +91,9 @@ class BallHogz(object):
 
 		if isGoalCollision(self.balls, self.goals) != None:
 			if isGoalCollision(self.balls, self.goals) == self.goals.sprites()[1]:
-				self.scores[0] += 1
-			elif isGoalCollision(self.balls, self.goals) == self.goals.sprites()[0]: 
 				self.scores[0] -= 1
+			elif isGoalCollision(self.balls, self.goals) == self.goals.sprites()[0]: 
+				self.scores[0] += 1
 		if self.scores[0] >=10 or self.scores[1] >=10:
 			print("hi")
 			self.mode = "end"
@@ -137,7 +137,11 @@ class BallHogz(object):
 			if(self.s.mode == "start"):
 				pygame.font.init()
 				f = pygame.font.SysFont('Comic Sans MS', 30)
-				moveS = "Toggle goals by pressing m. The current state is %r"%self.moving
+				if(self.moving):
+					moving = "moving"
+				else:
+					moving = "still"
+				moveS = "Toggle goals by pressing m. The current state is %s"%moving
 				t3_size = f.size(moveS)
 				t3 = f.render(moveS,False, (0, 230, 172))
 				screen.blit(t3, (266, 418))
