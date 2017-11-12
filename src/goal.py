@@ -67,8 +67,7 @@ class MovingGoal(Goal):
         if(self.y+self.goalHeight>=screenHeight):
             self.y-=self.speed
             self.speed=-self.speed
-        elif(self.y-self.goalHeight<=0):
-            print("issue")
+        elif(self.y-self.goalHeight<=40):
             self.y-=self.speed
             self.speed=-self.speed
         self.getRect()
