@@ -29,6 +29,7 @@ class BallHogz(object):
     def mousePressed(self, x, y):
         if self.s.mode == "start" or self.s.mode == "end":
             self.s.mode = "game"
+            
 
     def mouseReleased(self, x, y):
         pass
@@ -174,7 +175,7 @@ class BallHogz(object):
 
         clock = pygame.time.Clock()
         modes = pygame.display.list_modes(16)
-        screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        screen = pygame.display.set_mode([1000,750])
         self.width, self.height = pygame.display.get_surface().get_size()
         # set the title of the window
         pygame.display.set_caption(self.title)
@@ -197,7 +198,9 @@ class BallHogz(object):
             self.timerFired(time)
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    self.drawGoals(screen)
+                    if(not self.goalsDrawn):
+                        self.drawGoals(screen)
+                        self.goalsDrawn = True
                     self.mousePressed(*(event.pos))
                 elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     self.mouseReleased(*(event.pos))
