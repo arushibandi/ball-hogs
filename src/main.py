@@ -65,9 +65,9 @@ class BallHogz(object):
 			self.p1.rotateLeft()
 		elif keyCode == 275:
 			self.p1.rotateRight()
-		elif keyCode == 273 and self.s.mode == "start":
+		elif keyCode == 273:
 			self.p1.scale(1)
-		elif keyCode == 274 and self.s.mode == "start":
+		elif keyCode == 274:
 			self.p1.scale(-1)
 		elif keyCode == 109:
 			self.moving = not self.moving
