@@ -21,6 +21,7 @@ class BallHogz(object):
         self.scores = [0,0]
         self.goals = pygame.sprite.Group()
         self.moving = False
+        self.balls = pygame.sprite.Group()
 
     def mousePressed(self, x, y):
         if self.s.mode == "start" or self.s.mode == "end":
@@ -111,8 +112,9 @@ class BallHogz(object):
         # call game-specific initialization
         self.init()
     
-        
+        self.drawBalls(screen)
         self.drawGoals(screen)
+        
         
         playing = True
         while playing:
