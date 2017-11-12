@@ -17,7 +17,7 @@ class Ball(pygame.sprite.Sprite):
         self.image = pygame.Surface((2 * self.radius, 2 * self.radius), 
         pygame.SRCALPHA) 
         self.image = self.image.convert_alpha()
-        pygame.draw.circle(self.image, (0,0,0),
+        pygame.draw.circle(self.image, (255,255,112),
                            (self.radius, self.radius), self.radius)
 
     def getRect(self):  # GET REKT
@@ -41,27 +41,3 @@ class Ball(pygame.sprite.Sprite):
         elif self.yCenter > screenHeight:
             self.ySpeed*=-1
         self.getRect()
-            
-screen = pygame.display.set_mode((500, 500))
-balls = pygame.sprite.Group()
-ball1 = Ball(250,250)
-balls.add(ball1)
-balls.draw(screen)            
-
-
-pygame.init()
-screen = pygame.display.set_mode((500, 500))
-clock = pygame.time.Clock()
-
-balls = pygame.sprite.Group()
-playing = True
-while playing:
-    clock.tick(50)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            playing = False
-    balls.update(500, 500)
-    screen.fill((255, 255, 255))
-    balls.draw(screen)
-    pygame.display.flip()
-pygame.quit()
