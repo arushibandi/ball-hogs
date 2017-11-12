@@ -5,8 +5,8 @@ created by Lukas Peraza
  for 15-112 F15 Pygame Optional Lecture, 11/11/15
 - you might want to move the pygame.display.flip() to your 
  function,
-	in case you don't need to update the entire display every frame (then you
-	should use pygame.display.update(Rect) instead)
+    in case you don't need to update the entire display every frame (then you
+    should use pygame.display.update(Rect) instead)
 '''
 import pygame
 import socket
@@ -56,7 +56,6 @@ class BallHogz(object):
 		pass
 
 	def keyPressed(self, keyCode, modifier):
-		print(keyCode)
 		if keyCode == 112:
 			self.s.paused = not self.s.paused
 		elif keyCode == 276:
@@ -77,14 +76,13 @@ class BallHogz(object):
 	def keyReleased(self, keyCode, modifier):
 		pass
 
-	def timerFired(self, dt):
-
+	def timerFired(self, dt, screen):
 		def isGoalCollision(balls, goal):
 			collided = False
 			a = pygame.sprite.spritecollideany(balls.sprites()[0], goal, collided)
 			return a
 
-		angle = self.p1.getCollision(self.balls.sprites()[0].getLocation()[0], self.balls.sprites()[0].getLocation()[1], self.balls.sprites()[0].radius)
+		angle = self.p1.getCollision(screen, self.balls.sprites()[0].getLocation()[0], self.balls.sprites()[0].getLocation()[1], self.balls.sprites()[0].radius)
 		if angle != None:
 			print(angle)
 			self.balls.sprites()[0].bounce(angle)
@@ -128,14 +126,8 @@ class BallHogz(object):
 		self.balls.add(ball1)
 		
 	def redrawAll(self, screen):
-		if(self.s.mode == "start"):
-			pygame.font.init()
-			f = pygame.font.SysFont('Comic Sans MS', 30)
-			moveS = "Toggle goals by pressing m. The current state is %r"%self.moving
-			t3_size = f.size(moveS)
-			t3 = f.render(moveS,False, (0, 230, 172))
-			screen.blit(t3, (266, 418))
-		self.s.draw(screen)
+		
+		self.s.draw(screen, self.scores)
 		if(self.s.mode == "game"):
 			self.goals.update(self.width, self.height)
 			self.goals.draw(screen)
@@ -191,7 +183,6 @@ class BallHogz(object):
 		datatuple, masktuple = pygame.cursors.compile( clear_arrow,
 								  black='X', white='.', xor='o' )
 		pygame.mouse.set_cursor( (24,24), (0,0), datatuple, masktuple )
-		print(pygame.mouse.get_cursor())
 
 		clock = pygame.time.Clock()
 		modes = pygame.display.list_modes(16)
@@ -208,13 +199,13 @@ class BallHogz(object):
 	
 		self.drawBalls(screen)
 		
-		#pygame.mixer.music.load("/Users/michaelkronovet/Desktop/15-112/Hack112/Music.mp3")
-		#pygame.mixer.music.play(-1)
+		pygame.mixer.music.load("../Music.mp3")
+		pygame.mixer.music.play(-1)
 	
 		playing = True
 		while playing:
 			time = clock.tick(self.fps)
-			self.timerFired(time)
+			self.timerFired(time, screen)
 			for event in pygame.event.get():
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 					if(not self.goalsDrawn):
@@ -244,8 +235,9 @@ class BallHogz(object):
 		pygame.quit()
 
 def main():
-	game = BallHogz()
-	game.run()
+    game = BallHogz()
+    game.run()
 
 if __name__ == '__main__':
-	main()
+    main()
+

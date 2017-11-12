@@ -47,7 +47,6 @@ class Scene():
         t7 = f1.render("Advanced", False, (255, 255, 255))
         screen.blit(t7, (913,667))
 
-
     def drawGame(self, screen, scores):
         pygame.font.init()
         f = pygame.font.SysFont('Comic Sans MS', 20)
