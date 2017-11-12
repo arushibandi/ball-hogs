@@ -22,7 +22,7 @@ def init(data):
     data.x = data.width//2
     data.y = data.height//2
     data.size = 50
-    data.L = [[data.x,data.y], [data.x,data.y+data.size],
+    data.L = [[data.x,data.y], [data.x,datsa.y+data.size],
                 [data.x+data.size//4,data.y+(data.size*3)//4],
                 [data.x+(data.size*19)//40, data.y+(data.size*5)//4],
                 [data.x+(data.size*32)//50,data.y+(data.size*47)//40],
@@ -67,7 +67,7 @@ def timerFired(data):
 
 def redrawAll(canvas, data):
     canvas.create_polygon(data.L)
-    canvas.create_polygon([[250, 250], [200.0, 300.0], [213.0, 287.0], [188.0, 312.0], [192.0, 308.0], [217.0, 283.0], [217.0, 283.0]])
+    #canvas.create_polygon([[250, 250], [200.0, 300.0], [213.0, 287.0], [188.0, 312.0], [192.0, 308.0], [217.0, 283.0], [217.0, 283.0]])
 
 
 def run(width=300, height=300):
