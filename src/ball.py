@@ -25,8 +25,8 @@ class Ball(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.xCenter - self.radius, self.yCenter - self.radius,2 * self.radius, 2 * self.radius)
                      
     def isWallCollision(self,screen):
-        if (self.x<Center0 or self.x>screenWidth or self.yCenter<0 or 
-        self.yCenter >screenHeight):
+        if (self.x-self.radius<Center0 or self.x+self.radius>screenWidth or self.yCenter-self.radius<0 or 
+        self.yCenter+self.radius>screenHeight):
             update(self,screenWidth,screenHeight)
     
     def update(self, screenWidth, screenHeight):
