@@ -4,9 +4,9 @@ import random
 
 class Ball(pygame.sprite.Sprite):
     
-    def __init__(self, xCenter, yCenter, radius):
+    def __init__(self, xCenter, yCenter):
         super(Ball, self).__init__()
-        self.radius = radius
+        self.radius = 10
         self.xCenter = xCenter
         self.yCenter = yCenter
         self.xSpeed = 5
