@@ -94,9 +94,8 @@ class BallHogz(object):
             self.goals.update(self.width, self.height)
             self.goals.draw(screen)
         self.p1.draw(screen)
-
-            self.balls.update(self.width,self.height)
-            self.balls.draw(screen)
+        self.balls.update(self.width,self.height)
+        self.balls.draw(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
