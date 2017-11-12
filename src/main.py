@@ -12,6 +12,7 @@ import pygame
 import socket
 import scene
 import goal
+import ball
 
 class BallHogz(object):
 
@@ -66,12 +67,23 @@ class BallHogz(object):
             
         self.goals.add(right)
         self.goals.add(left)
+     
+    def drawBalls(self,screen):
+        #this draws the ball
+        xCenter = self.height//2
+        yCenter = self.height//2
+        
+        self.balls = pygame.sprite.Group()
+        ball1 = ball.Ball(xCenter,yCenter)
+        self.balls.add(ball1)
         
     def redrawAll(self, screen):
         self.s.draw(screen)
         if(self.s.mode == "game"):
             self.goals.update(self.width, self.height)
             self.goals.draw(screen)
+            self.balls.update(self.width,self.height)
+            self.balls.draw(screen)
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
