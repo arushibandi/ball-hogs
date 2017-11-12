@@ -7,7 +7,7 @@ class Ball(pygame.sprite.Sprite):
     
     def __init__(self, xCenter, yCenter):
         super(Ball, self).__init__()
-        self.radius = 25
+        self.radius = 20
         self.xCenter = xCenter
         self.yCenter = yCenter
         self.xSpeed = 10

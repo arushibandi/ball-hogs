@@ -1,8 +1,6 @@
 import math
 import cmath
 import pygame
-from sympy import *
-#from sympy.geometry import *
 
 class Player(object):
 	def __init__(self, x, y):
