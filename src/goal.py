@@ -12,6 +12,7 @@ class Goal(pygame.sprite.Sprite):
     
     #this function will draw the goals
     def __init__(self,  goalWidth, goalHeight, x, y):
+        print("goals")
         #first send the new goal object to the sprite superclass
         super(Goal, self).__init__()
         
@@ -32,6 +33,9 @@ class Goal(pygame.sprite.Sprite):
     def getRect(self):  # GET REKT
         self.rect = pygame.Rect(self.x - self.goalWidth, self.y - self.goalHeight,
                                 2 * self.goalWidth, 2 * self.goalHeight)
+                                
+    def getLocation(self):
+        return goalWidth, self.goalHeight, self.x, self.y, self.speed
 
     def update(self, screenWidth, screenHeight):
         self.getRect()
@@ -57,6 +61,9 @@ class MovingGoal(Goal):
         #random colors
         
         self.image.fill((255,255,255))
+        
+    def getLocation(self):
+        return goalWidth, self.goalHeight, self.x, self.y, self.speed
         
     def getRect(self):  # GET REKT
         self.rect = pygame.Rect(self.x - self.goalWidth, self.y - self.goalHeight,

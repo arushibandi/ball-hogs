@@ -21,8 +21,7 @@ class Ball(pygame.sprite.Sprite):
                            (self.radius, self.radius), self.radius)
 
     def getRect(self):  # GET REKT
-        self.rect = pygame.Rect(self.xCenter - self.radius, self.yCenter - self.radius,
-                                2 * self.radius, 2 * self.radius)
+        self.rect = pygame.Rect(self.xCenter - self.radius, self.yCenter - self.radius,2 * self.radius, 2 * self.radius)
                      
     def isWallCollision(self,screen):
         if (self.x<Center0 or self.x>screenWidth or self.yCenter<0 or 
@@ -41,3 +40,6 @@ class Ball(pygame.sprite.Sprite):
         elif self.yCenter > screenHeight:
             self.ySpeed*=-1
         self.getRect()
+    
+    def getLocation(self):
+        return [xCenter,yCenter]
