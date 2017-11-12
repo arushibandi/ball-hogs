@@ -65,13 +65,10 @@ class BallHogz(object):
 			self.p1.rotateLeft()
 		elif keyCode == 275:
 			self.p1.rotateRight()
-		elif keyCode == 273 and self.s.mode == "start":
+		elif keyCode == 273:
 			self.p1.scale(1)
-		elif keyCode == 274 and self.s.mode == "start":
+		elif keyCode == 274:
 			self.p1.scale(-1)
-		elif keyCode == 109:
-			self.moving = not self.moving
-			print(self.moving)
 		elif keyCode == 101:
 			pygame.quit()
 		
@@ -135,16 +132,22 @@ class BallHogz(object):
 		self.balls = pygame.sprite.Group()
 		ball1 = ball.Ball(xCenter,yCenter)
 		self.balls.add(ball1)
-		
+			
 	def redrawAll(self, screen):
-		
-		self.s.draw(screen, self.scores)
-		if(self.s.mode == "game"):
-			self.goals.update(self.width, self.height)
-			self.goals.draw(screen)
-			self.balls.update(self.width,self.height)
-			self.balls.draw(screen)
-		self.p1.draw(screen)
+			if(self.s.mode == "start"):
+				pygame.font.init()
+				f = pygame.font.SysFont('Comic Sans MS', 30)
+				moveS = "Toggle goals by pressing m. The current state is %r"%self.moving
+				t3_size = f.size(moveS)
+				t3 = f.render(moveS,False, (0, 230, 172))
+				screen.blit(t3, (266, 418))
+			self.s.draw(screen, self.scores)
+			if(self.s.mode == "game"):
+				self.goals.update(self.width, self.height)
+				self.goals.draw(screen)
+				self.balls.update(self.width,self.height)
+				self.balls.draw(screen)
+			self.p1.draw(screen)
 
 
 	def isKeyPressed(self, key):
@@ -199,7 +202,7 @@ class BallHogz(object):
 
 		clock = pygame.time.Clock()
 		modes = pygame.display.list_modes(16)
-		screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+		screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 		self.width, self.height = pygame.display.get_surface().get_size()
 		# set the title of the window
 		pygame.display.set_caption(self.title)
