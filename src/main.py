@@ -46,6 +46,10 @@ class BallHogz(object):
             self.p1.rotateLeft()
         elif keyCode == 275:
             self.p1.rotateRight()
+        elif keyCode == 273:
+            self.p1.scale(1)
+        elif keyCode == 274:
+            self.p1.scale(-1)
         elif keyCode == 101:
             pygame.quit()
         
@@ -56,7 +60,7 @@ class BallHogz(object):
         pass
 
     def timerFired(self, dt):
-        pass
+        self.p1.getCollision(self.width//2, self.height//2, 10)
 
     def drawGoals(self, screen):
         #this draws the goals
@@ -93,10 +97,10 @@ class BallHogz(object):
         if(self.s.mode == "game"):
             self.goals.update(self.width, self.height)
             self.goals.draw(screen)
-        self.p1.draw(screen)
-
             self.balls.update(self.width,self.height)
             self.balls.draw(screen)
+        self.p1.draw(screen)
+
 
     def isKeyPressed(self, key):
         ''' return whether a specific key is being held '''
