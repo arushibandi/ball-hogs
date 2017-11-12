@@ -1,4 +1,5 @@
 import math
+import cmath
 from tkinter import *
 '''class Mouse(object):
     def init(self, PID, x, y, size = 10):
@@ -21,8 +22,8 @@ def init(data):
     data.angle = 0
     data.x = data.width//2
     data.y = data.height//2
-    data.size = 50
-    data.L = [[data.x,data.y], [data.x,datsa.y+data.size],
+    data.size = 100
+    data.L = [[data.x,data.y], [data.x,data.y+data.size],
                 [data.x+data.size//4,data.y+(data.size*3)//4],
                 [data.x+(data.size*19)//40, data.y+(data.size*5)//4],
                 [data.x+(data.size*32)//50,data.y+(data.size*47)//40],
@@ -36,11 +37,20 @@ def mousePressed(event, data):
 # This is the rotate mouse function
 def keyPressed(event, data):
     if event.keysym == "Left":
-        data.angle = math.pi/2
+        data.angle = cmath.exp((math.pi/4)*1j)
+        center = complex(data.L[0][0],data.L[0][1])
         for i in range(1,len(data.L)):
-            tempX = data.L[i][0]-data.L[0][0]
-            tempY = data.L[i][1]-data.L[0][1]
-            data.L[i][0] -= data.L[0][0]
+            v = data.angle * (complex(data.L[i][0], data.L[i][1]) - center) + center
+            data.L[i][0] = v.real
+            data.L[i][1] = v.imag
+    elif event.keysym == "Right":
+        data.angle = cmath.exp((math.pi/4)*-1j)
+        center = complex(data.L[0][0],data.L[0][1])
+        for i in range(1,len(data.L)):
+            v = data.angle * (complex(data.L[i][0], data.L[i][1]) - center) + center
+            data.L[i][0] = v.real
+            data.L[i][1] = v.imag
+'''            data.L[i][0] -= data.L[0][0]
             data.L[i][1] -= data.L[0][1]
             data.L[i][0] = data.L[i][0]*math.cos(data.angle)+data.L[i][1]*math.sin(data.angle)
             data.L[i][1] = data.L[i][1]*math.sin(data.angle)-data.L[i][1]*math.cos(data.angle)
@@ -48,9 +58,9 @@ def keyPressed(event, data):
             data.L[i][1] += data.L[0][1]
 #           data.L[i][0] = data.L[0][0] + d*math.cos(data.angle)
 #           data.L[i][1] = data.L[0][1] + d*math.sin(data.angle)
-        print(data.L)
     elif event.keysym == "Right":
         data.angle = math.pi/2
+        print(data.L)
         for i in range(1,len(data.L)):
             data.L[i][0] -= data.L[0][0]
             data.L[i][1] -= data.L[0][1]
@@ -60,7 +70,7 @@ def keyPressed(event, data):
             data.L[i][1] += data.L[0][1]
         print(data.L)
 #            data.L[i][0] = data.L[0][0] + d*math.cos(data.angle)
-#            data.L[i][1] = data.L[0][1] + d*math.sin(data.angle)
+#            data.L[i][1] = data.L[0][1] + d*math.sin(data.angle)'''
 
 def timerFired(data):
     pass

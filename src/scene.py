@@ -38,6 +38,7 @@ class Scene():
 		pygame.draw.rect(screen, pygame.Color(255, 153, 153), right)
 		screen.blit(s_left, (0,0))
 		screen.blit(s_right, (self.w - r_size[0], 0))
+		pygame.draw.rect(screen, pygame.Color(255,250,250), center)
 
 	def drawEnd(self, screen):
 		pygame.font.init()
@@ -54,4 +55,3 @@ class Scene():
 		t1 = f.render("Press 'p' to unpause.", False, (0, 230, 172))
 		pygame.draw.rect(screen, pygame.Color(204, 255, 220), self.board)
 		screen.blit(t1, (self.w/2 - t1_size[0]/2,self.h/2))
-	
