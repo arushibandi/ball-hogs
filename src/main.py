@@ -134,7 +134,7 @@ class BallHogz(object):
 				t3_size = f.size(moveS)
 				t3 = f.render(moveS,False, (0, 230, 172))
 				screen.blit(t3, (266, 418))
-			self.s.draw(screen)
+			self.s.draw(screen, self.scores)
 			if(self.s.mode == "game"):
 				self.goals.update(self.width, self.height)
 				self.goals.draw(screen)
@@ -195,7 +195,7 @@ class BallHogz(object):
 
 		clock = pygame.time.Clock()
 		modes = pygame.display.list_modes(16)
-		screen = pygame.display.set_mode([1000,750])
+		screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 		self.width, self.height = pygame.display.get_surface().get_size()
 		# set the title of the window
 		pygame.display.set_caption(self.title)

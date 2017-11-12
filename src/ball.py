@@ -48,7 +48,9 @@ class Ball(pygame.sprite.Sprite):
 
     def bounce(self, angle):
 
-        self.xSpeed *= -1
+        r = random.randint(0,2)
+        if r == 0: self.xSpeed *= -1
+        elif r == 1: self.ySpeed *= -1
 
         #self.xSpeed *= math.cos(math.pi - angle)
         #self.ySpeed *= math.sin(math.pi - angle)
