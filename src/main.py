@@ -94,6 +94,13 @@ class BallHogz(object):
 				self.scores[0] -= 1
 			elif isGoalCollision(self.balls, self.goals) == self.goals.sprites()[0]: 
 				self.scores[0] += 1
+		if self.scores[0] >=10 or self.scores[1] >=10:
+			print("hi")
+			self.mode = "end"
+			self.paused = True
+			f = pygame.font.SysFont('Comic Sans MS', 30)
+			t1 = f.render("GAME OVER", False, (0, 0, 0))
+			t1_size = f.size("GAME OVER")
 
 
 	def drawGoals(self, screen):
