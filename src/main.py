@@ -59,7 +59,6 @@ class BallHogz(object):
         self.goals.add(right)
         left = goal.MovingGoal(goalWidth, goalHeight, xLeft,yLeft, 2)
         self.goals.add(left)
-
         
     def redrawAll(self, screen):
         self.s.draw(screen)
