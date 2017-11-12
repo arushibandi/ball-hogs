@@ -1,16 +1,17 @@
 # this creates the ball class and related functions
 import pygame
 import random 
+import math
 
 class Ball(pygame.sprite.Sprite):
     
     def __init__(self, xCenter, yCenter):
         super(Ball, self).__init__()
-        self.radius = 10
+        self.radius = 25
         self.xCenter = xCenter
         self.yCenter = yCenter
-        self.xSpeed = 5
-        self.ySpeed = 5
+        self.xSpeed = 10
+        self.ySpeed = 10
         self.boost = False
         self.rect = pygame.Rect(xCenter - self.radius, yCenter - self.radius,
                                 2 * self.radius, 2 * self.radius)
@@ -24,8 +25,8 @@ class Ball(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.xCenter - self.radius, self.yCenter - self.radius,2 * self.radius, 2 * self.radius)
                      
     def isWallCollision(self,screen):
-        if (self.x<Center0 or self.x>screenWidth or self.yCenter<0 or 
-        self.yCenter >screenHeight):
+        if (self.x-self.radius<Center0 or self.x+self.radius>screenWidth or self.yCenter-self.radius<0 or 
+        self.yCenter+self.radius>screenHeight):
             update(self,screenWidth,screenHeight)
     
     def update(self, screenWidth, screenHeight):
@@ -42,4 +43,12 @@ class Ball(pygame.sprite.Sprite):
         self.getRect()
     
     def getLocation(self):
-        return [xCenter,yCenter]
+        return [self.xCenter, self.yCenter]
+
+
+    def bounce(self, angle):
+
+        self.xSpeed *= -1
+
+        #self.xSpeed *= math.cos(math.pi - angle)
+        #self.ySpeed *= math.sin(math.pi - angle)

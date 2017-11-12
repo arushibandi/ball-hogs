@@ -1,12 +1,13 @@
 import pygame
 
 class Scene():
-    def __init__(self, w , h, mode="start", paused=False):
+    def __init__(self, w , h, moving, mode="start", paused=False):
         self.w = w
         self.h = h
         self.mode = mode
         self.paused = paused
         self.board = pygame.Rect(0, 0, self.w, self.h)
+        self.moving = moving
         
     def draw(self, screen, scores=[0,0]):
         if self.paused == True and self.mode == "game": self.drawPaused(screen)
@@ -25,6 +26,11 @@ class Scene():
         pygame.draw.rect(screen, pygame.Color(204, 255, 220), self.board)
         screen.blit(t1, (self.w/2 - t1_size[0]/2,self.h/2))
         screen.blit(t2, (self.w/2 - t2_size[0]/2,self.h/2 + t1_size[1]))
+
+        moveS = "Toggle goals by pressing m. The current state is %r"%self.moving
+        t3_size = f.size(moveS)
+        t3 = f.render(moveS,False, (0, 230, 172))
+        screen.blit(t3, (self.w/2 - t2_size[0]*.80,self.h/2 + t1_size[1]+t2_size[1]))
 
     def drawGame(self, screen, scores):
         pygame.font.init()
